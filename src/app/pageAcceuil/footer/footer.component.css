@@ -1,0 +1,121 @@
+/* Footer Section */
+#footer {
+    background-color: #f9f9f9; /* Light background */
+    padding: 40px 20px; /* Réduction de la taille du padding */
+    color: #333;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .footer-top {
+    padding-bottom: 20px; /* Réduction de l'espacement entre les sections */
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .footer-about {
+    color: #333;
+  }
+  
+  .footer-about .sitename {
+    font-size: 1.5rem; /* Taille de police réduite */
+    font-weight: bold;
+    color: #4154f1;
+    text-transform: uppercase;
+  }
+  
+  .footer-about .sitename span {
+    color: #4154f1;
+  }
+  
+  .footer-contact p {
+    color: #555;
+    font-size: 0.9rem; /* Réduction de la taille de police */
+    line-height: 1.4;
+  }
+  
+  .footer-contact p strong {
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .footer-contact p span {
+    font-size: 0.9rem; /* Réduction de la taille de police */
+  }
+  
+  .footer-links h4 {
+    font-size: 1rem; /* Taille de police réduite */
+    font-weight: bold;
+    margin-bottom: 10px; /* Réduction de l'espacement */
+    color: #333;
+  }
+  
+  .footer-links ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .footer-links ul li {
+    font-size: 0.9rem; /* Réduction de la taille de police */
+    margin-bottom: 8px; /* Réduction de l'espacement */
+  }
+  
+  .footer-links ul li i {
+    color: #4154f1;
+    margin-right: 6px; /* Réduction de l'espacement entre l'icône et le texte */
+  }
+  
+  .footer-links ul li a {
+    color: #333;
+    text-decoration: none;
+    font-size: 0.9rem; /* Réduction de la taille de police */
+    transition: color 0.3s ease;
+  }
+  
+  .footer-links ul li a:hover {
+    color: #4154f1;
+  }
+  
+  .copyright {
+    padding-top: 20px; /* Réduction de l'espacement */
+  }
+  
+  .copyright p {
+    color: #555;
+    font-size: 0.9rem; /* Réduction de la taille de police */
+    margin-bottom: 5px; /* Réduction de l'espacement */
+  }
+  
+  .copyright .sitename {
+    color: #4154f1;
+    font-weight: bold;
+  }
+  
+  .credits {
+    font-size: 0.8rem; /* Taille de police réduite */
+    color: #777;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .footer-top .row {
+      flex-direction: column;
+    }
+  
+    .footer-about {
+      text-align: center;
+    }
+  
+    .footer-links {
+      text-align: center;
+      margin-top: 20px;
+    }
+  
+    .footer-links ul {
+      text-align: center;
+    }
+  
+    .footer-contact {
+      text-align: center;
+    }
+  }
+  

@@ -1,0 +1,89 @@
+/* Style pour l'en-tête */
+#header {
+    background-color: #ffffff; /* Fond blanc pour l'en-tête */
+    padding: 20px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header .container-xl {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sitename {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.navmenu {
+    display: flex;
+    gap: 20px;
+}
+
+.navmenu ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navmenu li {
+    margin-right: 20px;
+}
+
+.navmenu a {
+    color: #555;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.navmenu a:hover,
+.navmenu .active {
+    color: #007bff; /* Changer la couleur du lien actif */
+}
+
+/* Menu mobile */
+.mobile-nav-toggle {
+    display: none;
+}
+
+/* Styles pour les écrans plus petits (Mobile) */
+@media (max-width: 991px) {
+    .navmenu {
+        display: none;
+    }
+
+    .mobile-nav-toggle {
+        display: block;
+    }
+}
+
+
+.btn-get-started {
+    background-color: #38bdf8;
+    color: #111827;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-get-started i {
+    transition: transform 0.3s ease;
+  }
+  
+  .btn-get-started:hover {
+    background-color: #0ea5e9;
+  }
+  
+  .btn-get-started:hover i {
+    transform: translateX(5px);
+  }
+  
