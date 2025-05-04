@@ -1,32 +1,94 @@
-<div class="dashboard">
-  <h2>Bienvenue dans votre espace AutoCare</h2>
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h2>Bienvenue dans votre espace AutoCare</h2>
+  </header>
 
-  <section class="appointment-section">
-    <h3>📅 Prendre un rendez-vous</h3>
-    <form (submit)="bookAppointment()">
-      <label>Date</label>
-      <input type="date" [(ngModel)]="appointment.date" name="date" required />
-      <label>Heure</label>
-      <input type="time" [(ngModel)]="appointment.time" name="time" required />
-      <label>Service</label>
-      <select [(ngModel)]="appointment.service" name="service" required>
-        <option value="Vidange">Vidange</option>
-        <option value="Diagnostic moteur">Diagnostic moteur</option>
-        <option value="Freinage">Freinage</option>
-        <option value="Climatisation">Climatisation</option>
-      </select>
-      <button type="submit">Réserver</button>
-    </form>
-  </section>
+  <div class="dashboard-content">
+    <!-- Section prise de rendez-vous -->
+    <section class="appointment-section card">
+      <h3 class="section-title">📅 Prendre un rendez-vous</h3>
+      <form (ngSubmit)="bookAppointment()" class="appointment-form">
+        <div class="form-group">
+          <label for="appointment-date">Date</label>
+          <input 
+            type="date" 
+            id="appointment-date"
+            [(ngModel)]="newAppointment.date" 
+            name="date" 
+            required
+            class="form-control"
+            [min]="getTodayDate()">
+        </div>
 
+        <div class="form-group">
+          <label for="appointment-time">Heure</label>
+          <input 
+            type="time" 
+            id="appointment-time"
+            [(ngModel)]="newAppointment.time" 
+            name="time" 
+            required
+            class="form-control"
+            min="08:00" 
+            max="18:00">
+        </div>
 
+        <div class="form-group">
+          <label for="appointment-service">Service</label>
+          <select 
+            id="appointment-service"
+            [(ngModel)]="newAppointment.service" 
+            name="service" 
+            required
+            class="form-control">
+            <option value="" disabled selected>Sélectionnez un service</option>
+            <option *ngFor="let service of services" [value]="service">{{service}}</option>
+          </select>
+        </div>
 
-  <section class="history-section">
-    <h3>🔧 Historique des diagnostics</h3>
-    <ul>
-      <li *ngFor="let diag of diagnostics">
-        {{ diag.date }} - {{ diag.description }}
-      </li>
-    </ul>
-  </section>
+        <button type="submit" class="btn-primary" [disabled]="!isFormValid()">
+          Réserver
+        </button>
+      </form>
+    </section>
+
+    <!-- Section rendez-vous à venir -->
+    <section class="upcoming-section card">
+      <h3 class="section-title">🛠️ Mes rendez-vous</h3>
+      <div *ngIf="activeAppointments.length === 0" class="empty-state">
+        Aucun rendez-vous programmé
+      </div>
+      <ul class="appointment-list">
+        <li *ngFor="let rdv of activeAppointments" class="appointment-item">
+          <div class="appointment-details">
+            <span class="service">{{rdv.service}}</span>
+            <span class="datetime">{{rdv.date | date:'dd/MM/yyyy'}} à {{rdv.time}}</span>
+            <span class="status" [ngClass]="rdv.status.toLowerCase()">
+              {{getStatusText(rdv.status)}}
+            </span>
+          </div>
+          <button 
+            *ngIf="rdv.status === 'Pending' || rdv.status === 'Confirmed'"
+            (click)="cancelAppointment(rdv.id)"
+            class="btn-cancel">
+            Annuler
+          </button>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Section historique -->
+    <section class="history-section card">
+      <h3 class="section-title">🔧 Historique des diagnostics</h3>
+      <div *ngIf="diagnostics.length === 0" class="empty-state">
+        Aucun diagnostic enregistré
+      </div>
+      <ul class="diagnostic-list">
+        <li *ngFor="let diag of diagnostics" class="diagnostic-item">
+          <span class="date">{{diag.date | date:'dd/MM/yyyy'}}</span>
+          <span class="description">{{diag.description}}</span>
+        </li>
+      </ul>
+    </section>
+  </div>
 </div>
