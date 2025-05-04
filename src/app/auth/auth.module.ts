@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AuthRoutingModule } from './auth-routing.module';
 import { AuthComponent } from './auth.component';
@@ -22,7 +22,6 @@ import { noAuthGuard } from './guards/no-auth.guard';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    HttpClientModule,
     AuthRoutingModule
   ],
   exports: [

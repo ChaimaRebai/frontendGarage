@@ -14,7 +14,10 @@
           <li><a href="#services">Our Services</a></li>
           <li>
             <div class="d-flex">
-              <a routerLink="/login" class="btn-get-started" style="color: black;" aria-label="Loan Calculator"><i class="fa-solid fa-arrow-right"></i> <span style="color: black;">LogIn</span></a>
+              <a [routerLink]="['/auth/login']" class="btn-get-started" aria-label="Login">
+                <i class="fa-solid fa-arrow-right"></i>
+                <span>LogIn</span>
+              </a>
             </div>
           </li>
           

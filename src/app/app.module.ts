@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AcceuilComponent } from './pageAcceuil/acceuil/acceuil.component';
@@ -46,6 +46,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     EditAppointmentDialogComponent,
   ],
   imports: [
+    HttpClientModule,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
