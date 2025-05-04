@@ -67,6 +67,14 @@
               {{getStatusText(rdv.status)}}
             </span>
           </div>
+
+          <button 
+            *ngIf="rdv.status === 'Pending'"
+            (click)="editAppointment(rdv)"
+            class="btn-edit">
+            Modifier
+          </button>
+
           <button 
             *ngIf="rdv.status === 'Pending' || rdv.status === 'Confirmed'"
             (click)="cancelAppointment(rdv.id)"

@@ -1,0 +1,25 @@
+<h2>Modifier le rendez-vous</h2>
+
+<form>
+  <mat-form-field appearance="fill">
+    <mat-label>Service</mat-label>
+    <input matInput [(ngModel)]="editedAppointment.service" name="service">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Date</mat-label>
+    <input matInput [matDatepicker]="picker" [(ngModel)]="editedAppointment.date" name="date">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Heure</mat-label>
+    <input matInput type="time" [(ngModel)]="editedAppointment.time" name="time">
+  </mat-form-field>
+
+  <div class="actions">
+    <button mat-button (click)="cancel()">Annuler</button>
+    <button mat-raised-button color="primary" (click)="save()">Sauvegarder</button>
+  </div>
+</form>

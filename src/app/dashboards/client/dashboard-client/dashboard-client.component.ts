@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { CalendarEvent } from 'angular-calendar';
 import { FormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { EditAppointmentDialogComponent } from '../edit-appointment-dialog/edit-appointment-dialog.component';
+
+
 
 
 export interface Appointment {
@@ -69,6 +73,37 @@ export class DashboardClientComponent {
 
     this.appointments.push(appointment);
     this.resetForm();
+  }
+
+  constructor(private dialog: MatDialog) {}
+
+
+  editAppointment(rdv: any) {
+    const dialogRef = this.dialog.open(EditAppointmentDialogComponent, {
+      data: { appointment: rdv }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const index = this.activeAppointments.findIndex(a => a.id === rdv.id);
+        if (index !== -1) {
+          this.activeAppointments[index] = result;
+        }
+      }
+    });
+  }
+
+  editedAppointment: any = null;
+
+  saveAppointmentChanges() {
+    const index = this.activeAppointments.findIndex(
+      appt => appt.id === this.editedAppointment.id
+    );
+    if (index !== -1) {
+      this.activeAppointments[index] = { ...this.editedAppointment };
+    }
+    // Optionally call API to update on the backend
+    this.editedAppointment = null;
   }
 
   // Annuler un rendez-vous
