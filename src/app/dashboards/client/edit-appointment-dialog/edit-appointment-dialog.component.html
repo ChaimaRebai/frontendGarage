@@ -1,9 +1,12 @@
+<div style="padding: 2rem;">
 <h2>Modifier le rendez-vous</h2>
 
 <form>
-  <mat-form-field appearance="fill">
+  <mat-form-field appearance="fill" >
     <mat-label>Service</mat-label>
-    <input matInput [(ngModel)]="editedAppointment.service" name="service">
+    <div >
+      <input matInput [(ngModel)]="editedAppointment.service" name="service">
+    </div>
   </mat-form-field>
 
   <mat-form-field appearance="fill">
@@ -23,3 +26,4 @@
     <button mat-raised-button color="primary" (click)="save()">Sauvegarder</button>
   </div>
 </form>
+</div>
