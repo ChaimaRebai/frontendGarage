@@ -1,0 +1,21 @@
+.center-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* full viewport height */
+  }
+  .center-img img {
+    max-width: 100%;
+    height: auto;
+  }
+  .center-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* full viewport height */
+  }
+  .center-img img {
+    max-width: 100%;
+    height: auto;
+  }
+    

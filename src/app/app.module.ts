@@ -16,6 +16,8 @@ import { FormsModule } from '@angular/forms';
 import { CalendarModule, DateAdapter  } from 'angular-calendar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { NotFoundComponent } from './not-found/not-found.component';
+
 
 
 
@@ -32,6 +34,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     ServicesComponent,
     FooterComponent,
     NavbarComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
