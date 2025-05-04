@@ -1,65 +1,78 @@
-<div class="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-    <h2 class="text-2xl font-bold mb-6 text-center">Créer un compte</h2>
-    
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-      <!-- Email -->
-      <div class="mb-4">
-        <label class="block text-gray-700 mb-2">Email</label>
-        <input 
-          type="email" 
-          formControlName="email"
-          class="w-full px-3 py-2 border rounded-lg">
-      </div>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <h2 class="card-title text-center mb-4">Créer un compte</h2>
+
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input 
+                type="email" 
+                id="email"
+                class="form-control"
+                formControlName="email">
+            </div>
   
-      <!-- Password -->
-      <div class="mb-4">
-        <label class="block text-gray-700 mb-2">Mot de passe (6 caractères min)</label>
-        <input 
-          type="password" 
-          formControlName="password"
-          class="w-full px-3 py-2 border rounded-lg">
-      </div>
+            <!-- Password -->
+            <div class="mb-3">
+              <label for="password" class="form-label">Mot de passe (6 caractères min)</label>
+              <input 
+                type="password" 
+                id="password"
+                class="form-control"
+                formControlName="password">
+            </div>
   
-      <!-- Confirm Password -->
-      <div class="mb-4">
-        <label class="block text-gray-700 mb-2">Confirmer le mot de passe</label>
-        <input 
-          type="password" 
-          formControlName="confirmPassword"
-          class="w-full px-3 py-2 border rounded-lg">
-        <div *ngIf="registerForm.hasError('mismatch')" class="text-red-500 text-sm">
-          Les mots de passe ne correspondent pas
+            <!-- Confirm Password -->
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">Confirmer le mot de passe</label>
+              <input 
+                type="password" 
+                id="confirmPassword"
+                class="form-control"
+                formControlName="confirmPassword">
+              <div *ngIf="registerForm.hasError('mismatch')" class="invalid-feedback">
+                Les mots de passe ne correspondent pas
+              </div>
+            </div>
+  
+            <!-- Role Selection -->
+            <div class="mb-4">
+              <label for="role" class="form-label">Je suis un :</label>
+              <select 
+                formControlName="role" 
+                class="form-select">
+                <option *ngFor="let role of roles" [value]="role.value">
+                  {{ role.label }}
+                </option>
+              </select>
+            </div>
+  
+            <!-- Error Message -->
+            <div *ngIf="errorMessage" class="alert alert-danger">
+              {{ errorMessage }}
+            </div>
+  
+            <!-- Submit Button -->
+            <button 
+              type="submit" 
+              [disabled]="registerForm.invalid || isLoading"
+              class="btn btn-success w-100">
+              <span *ngIf="!isLoading">S'inscrire</span>
+              <span *ngIf="isLoading">Inscription en cours...</span>
+            </button>
+          </form>
+  
+          <div class="text-center mt-3">
+            <a routerLink="/auth/login" class="text-decoration-none">
+              Déjà un compte ? Se connecter
+            </a>
+          </div>
         </div>
       </div>
-  
-      <!-- Role Selection -->
-      <div class="mb-6">
-        <label class="block text-gray-700 mb-2">Je suis un :</label>
-        <select formControlName="role" class="w-full px-3 py-2 border rounded-lg">
-          <option *ngFor="let role of roles" [value]="role.value">
-            {{ role.label }}
-          </option>
-        </select>
-      </div>
-  
-      <!-- Error Message -->
-      <div *ngIf="errorMessage" class="mb-4 p-3 bg-red-100 text-red-700 rounded">
-        {{ errorMessage }}
-      </div>
-  
-      <!-- Submit Button -->
-      <button 
-        type="submit" 
-        [disabled]="registerForm.invalid || isLoading"
-        class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 disabled:bg-green-300">
-        <span *ngIf="!isLoading">S'inscrire</span>
-        <span *ngIf="isLoading">Inscription en cours...</span>
-      </button>
-    </form>
-  
-    <div class="mt-4 text-center">
-      <a routerLink="/auth/login" class="text-blue-600 hover:underline">
-        Déjà un compte ? Se connecter
-      </a>
     </div>
   </div>
+</div>
