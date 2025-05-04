@@ -1,1 +1,550 @@
-<p>dashboard-professional works!</p>
+<!-- dashboard-professional.component.html -->
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <div class="sidebar" [class.show]="sidebarVisible">
+    <div class="sidebar-header">
+      <div class="logo">
+        <i class="fas fa-tools"></i>
+        <span>AutoServices</span>
+      </div>
+      <button class="btn btn-sm btn-link sidebar-toggle d-lg-none" (click)="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+    <div class="sidebar-menu">
+      <ul>
+        <li class="active">
+          <a href="#">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Tableau de bord</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Rendez-vous</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fas fa-users"></i>
+            <span>Clients</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fas fa-file-invoice"></i>
+            <span>Factures</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fas fa-cog"></i>
+            <span>Paramètres</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="avatar">{{ getUserInitials() }}</div>
+        <div>
+          <div class="name">Mohammed Gharbi</div>
+          <div class="role text-muted small">Mécanicien</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Header -->
+    <header class="dashboard-header">
+      <div class="d-flex align-items-center">
+        <button class="btn btn-sm sidebar-toggle d-lg-none me-3" (click)="toggleSidebar()">
+          <i class="fas fa-bars"></i>
+        </button>
+        <h1 class="h4 mb-0">Tableau de bord</h1>
+      </div>
+      <div class="header-actions">
+        <div class="search-box me-3">
+          <i class="fas fa-search"></i>
+          <input type="text" class="form-control" placeholder="Rechercher..." [(ngModel)]="searchTerm">
+        </div>
+        <div class="dropdown">
+          <button class="btn btn-sm position-relative" type="button" id="notificationsDropdown" data-bs-toggle="dropdown">
+            <i class="fas fa-bell"></i>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              3
+            </span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end notification-dropdown" aria-labelledby="notificationsDropdown">
+            <li><h6 class="dropdown-header">Notifications</h6></li>
+            <li><div class="dropdown-divider"></div></li>
+            <li>
+              <a class="dropdown-item" href="#">
+                <div class="notification-item">
+                  <div class="notification-icon bg-primary">
+                    <i class="fas fa-calendar-check text-white"></i>
+                  </div>
+                  <div class="notification-content">
+                    <div class="notification-title">Nouveau rendez-vous</div>
+                    <div class="notification-text text-muted small">Karim Lazaar à 14:30</div>
+                    <div class="notification-time text-muted">il y a 2 minutes</div>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li><div class="dropdown-divider"></div></li>
+            <li>
+              <a class="dropdown-item" href="#">
+                <div class="notification-item">
+                  <div class="notification-icon bg-success">
+                    <i class="fas fa-check text-white"></i>
+                  </div>
+                  <div class="notification-content">
+                    <div class="notification-title">Paiement reçu</div>
+                    <div class="notification-text text-muted small">Fatima a payé 340DT</div>
+                    <div class="notification-time text-muted">il y a 30 minutes</div>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li><div class="dropdown-divider"></div></li>
+            <li>
+              <a class="dropdown-item text-center small text-muted" href="#">Voir toutes les notifications</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-content p-4">
+      <!-- Stats Cards -->
+      <div class="row g-3 mb-4">
+        <div class="col-md-6 col-lg-3" *ngFor="let stat of statistics">
+          <div class="card stat-card h-100 border-0 shadow-sm">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="stat-title text-muted">{{ stat.label }}</h6>
+                  <h3 class="stat-value mb-0" [ngClass]="'text-' + stat.color">
+                    {{ stat.label === 'Revenus' ? stat.value + ' DT' : stat.value }}
+                  </h3>
+                </div>
+                <div class="stat-icon" [ngClass]="'bg-' + stat.color + '-subtle'">
+                  <i [class]="'fas fa-' + stat.icon"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- View Toggle & Actions -->
+      <div class="actions-bar mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="view-toggle btn-group" role="group">
+            <button type="button" class="btn" [ngClass]="displayMode === 'list' ? 'btn-primary' : 'btn-outline-primary'" (click)="changeView('list')">
+              <i class="fas fa-list me-1"></i> Liste
+            </button>
+            <button type="button" class="btn" [ngClass]="displayMode === 'calendar' ? 'btn-primary' : 'btn-outline-primary'" (click)="changeView('calendar')">
+              <i class="fas fa-calendar me-1"></i> Calendrier
+            </button>
+          </div>
+          <div class="actions">
+            <button class="btn btn-sm btn-outline-secondary me-2" (click)="exportToCSV()">
+              <i class="fas fa-download me-1"></i> Exporter
+            </button>
+            <button class="btn btn-sm btn-primary" (click)="openAppointmentModal(addAppointmentModal)">
+              <i class="fas fa-plus me-1"></i> Nouveau RDV
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="filters card border-0 shadow-sm mb-4">
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                <input type="text" class="form-control" placeholder="Rechercher un client..." [(ngModel)]="searchTerm">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-filter"></i></span>
+                <select class="form-select" [(ngModel)]="statusFilter">
+                  <option value="all">Tous les statuts</option>
+                  <option value="Pending">En attente</option>
+                  <option value="Confirmed">Confirmés</option>
+                  <option value="Cancelled">Annulés</option>
+                  <option value="Completed">Terminés</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                <input type="date" class="form-control" [(ngModel)]="dateFilter">
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="d-grid">
+                <button class="btn btn-primary" type="button" (click)="searchTerm = ''; statusFilter = 'all'; dateFilter = ''">
+                  <i class="fas fa-sync-alt me-1"></i> Réinitialiser
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- List View -->
+      <div class="appointments-table" *ngIf="displayMode === 'list'">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th class="sortable" (click)="sortAppointments('clientName')">
+                      Client 
+                      <i *ngIf="sortBy === 'clientName'" 
+                         [class]="sortDirection === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'"></i>
+                    </th>
+                    <th class="sortable" (click)="sortAppointments('date')">
+                      Date 
+                      <i *ngIf="sortBy === 'date'" 
+                         [class]="sortDirection === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'"></i>
+                    </th>
+                    <th class="sortable" (click)="sortAppointments('time')">
+                      Heure 
+                      <i *ngIf="sortBy === 'time'" 
+                         [class]="sortDirection === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'"></i>
+                    </th>
+                    <th class="sortable" (click)="sortAppointments('service')">
+                      Service 
+                      <i *ngIf="sortBy === 'service'" 
+                         [class]="sortDirection === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'"></i>
+                    </th>
+                    <th class="sortable" (click)="sortAppointments('status')">
+                      Statut 
+                      <i *ngIf="sortBy === 'status'" 
+                         [class]="sortDirection === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'"></i>
+                    </th>
+                    <th class="sortable" (click)="sortAppointments('price')">
+                      Prix
+                      <i *ngIf="sortBy === 'price'" 
+                         [class]="sortDirection === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'"></i>
+                    </th>
+                    <th>Paiement</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let app of paginatedAppointments" [ngClass]="{'table-light': app.status === 'Cancelled', 'table-success': app.status === 'Completed'}">
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar-circle">{{ app.clientName.charAt(0) }}</div>
+                        <div class="ms-2">
+                          <div class="fw-medium text-dark">{{ app.clientName }}</div>
+                          <div class="small text-muted">{{ app.clientPhone }}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{{ formatDate(app.date) }}</td>
+                    <td>{{ app.time }}</td>
+                    <td>{{ app.service }}</td>
+                    <td>
+                      <span
+                        class="badge"
+                        [ngClass]="{
+                          'bg-warning text-dark': app.status === 'Pending',
+                          'bg-primary': app.status === 'Confirmed',
+                          'bg-danger': app.status === 'Cancelled',
+                          'bg-success': app.status === 'Completed'
+                        }"
+                      >
+                        {{ getStatusText(app.status) }}
+                      </span>
+                    </td>
+                    <td>{{ app.price }} DT</td>
+                    <td>
+                      <span 
+                        class="badge"
+                        [ngClass]="getPaymentStatusBadgeClass(app.paymentStatus)"
+                      >
+                        {{ getPaymentStatusText(app.paymentStatus!) }}
+                      </span>
+                    </td>
+                    <td>
+                      <div class="btn-group btn-group-sm" role="group">
+                        <button type="button" class="btn btn-outline-primary" (click)="openAppointmentModal(openAppointmentModal, app)">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-success" (click)="updateStatus(app.id, 'Confirmed')" *ngIf="app.status !== 'Confirmed' && app.status !== 'Completed'">
+                          <i class="fas fa-check"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-danger" (click)="updateStatus(app.id, 'Cancelled')" *ngIf="app.status !== 'Cancelled' && app.status !== 'Completed'">
+                          <i class="fas fa-times"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-info" (click)="updateStatus(app.id, 'Completed')" *ngIf="app.status === 'Confirmed'">
+                          <i class="fas fa-check-circle"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-warning" (click)="sendReminder(app)" *ngIf="app.clientEmail">
+                          <i class="fas fa-bell"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <!-- Empty state -->
+            <div *ngIf="paginatedAppointments.length === 0" class="text-center py-5">
+              <div class="empty-state">
+                <i class="fas fa-calendar-times empty-icon"></i>
+                <h5>Aucun rendez-vous trouvé</h5>
+                <p class="text-muted">Modifiez vos filtres ou ajoutez un nouveau rendez-vous</p>
+                <button class="btn btn-primary" (click)="openAppointmentModal(addAppointmentModal)">
+                  <i class="fas fa-plus me-1"></i> Ajouter un rendez-vous
+                </button>
+              </div>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="pagination-container p-3 border-top" *ngIf="filteredAppointments.length > itemsPerPage">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="pagination-info">
+                  Affichage {{ (currentPage - 1) * itemsPerPage + 1 }} à {{ Math.min(currentPage * itemsPerPage, filteredAppointments.length) }} sur {{ filteredAppointments.length }} rendez-vous
+                </div>
+                <nav>
+                  <ul class="pagination mb-0">
+                    <li class="page-item" [ngClass]="{'disabled': currentPage === 1}">
+                      <a class="page-link" href="#" (click)="$event.preventDefault(); changePage(currentPage - 1)" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                    <li class="page-item" *ngFor="let page of totalPages" [ngClass]="{'active': page === currentPage}">
+                      <a class="page-link" href="#" (click)="$event.preventDefault(); changePage(page)">{{ page }}</a>
+                    </li>
+                    <li class="page-item" [ngClass]="{'disabled': currentPage === totalPages.length}">
+                      <a class="page-link" href="#" (click)="$event.preventDefault(); changePage(currentPage + 1)" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calendar View -->
+      <div class="calendar-view" *ngIf="displayMode === 'calendar'">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <div class="calendar-header d-flex justify-content-between align-items-center mb-4">
+              <div class="calendar-nav">
+                <button class="btn btn-sm btn-outline-secondary me-2">
+                  <i class="fas fa-chevron-left"></i>
+                </button>
+                <h5 class="d-inline-block mb-0">Juin 2025</h5>
+                <button class="btn btn-sm btn-outline-secondary ms-2">
+                  <i class="fas fa-chevron-right"></i>
+                </button>
+              </div>
+              <div class="calendar-view-options btn-group btn-group-sm">
+                <button class="btn" [ngClass]="currentView === 'day' ? 'btn-primary' : 'btn-outline-primary'">Jour</button>
+                <button class="btn" [ngClass]="currentView === 'week' ? 'btn-primary' : 'btn-outline-primary'">Semaine</button>
+                <button class="btn" [ngClass]="currentView === 'month' ? 'btn-primary' : 'btn-outline-primary'">Mois</button>
+              </div>
+            </div>
+            <div class="calendar-container">
+              <!-- Simplified view for demonstration -->
+              <div class="calendar-day-view">
+                <div class="time-column">
+                  <div class="time-slot" *ngFor="let hour of [8,9,10,11,12,13,14,15,16,17,18]">
+                    {{ hour }}:00
+                  </div>
+                </div>
+                <div class="events-column">
+                  <div class="event-card" style="top: 20px; height: 80px; left: 70px">
+                    <div class="event-time">10:00 - 11:30</div>
+                    <div class="event-title">Vidange - Ahmed Benali</div>
+                  </div>
+                  <div class="event-card" style="top: 260px; height: 60px; left: 70px">
+                    <div class="event-time">14:30 - 15:30</div>
+                    <div class="event-title">Diagnostic moteur - Ons Cherif</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statistics and Charts -->
+      <div class="row g-4 mt-4">
+        <div class="col-md-6">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white border-0">
+              <h5 class="card-title mb-0">Répartition des rendez-vous</h5>
+            </div>
+            <div class="card-body">
+              <div class="chart-container" style="height: 250px;">
+                <canvas id="appointmentChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white border-0">
+              <h5 class="card-title mb-0">Revenus mensuels</h5>
+            </div>
+            <div class="card-body">
+              <div class="chart-container" style="height: 250px;">
+                <canvas id="revenueChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activities -->
+      <div class="card border-0 shadow-sm mt-4">
+        <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0">Activités récentes</h5>
+          <a href="#" class="btn btn-sm btn-link">Voir tout</a>
+        </div>
+        <div class="card-body p-0">
+          <ul class="activity-list">
+            <li class="activity-item">
+              <div class="activity-icon bg-primary">
+                <i class="fas fa-plus text-white"></i>
+              </div>
+              <div class="activity-content">
+                <div class="d-flex justify-content-between">
+                  <div class="activity-title">Nouveau rendez-vous créé</div>
+                  <div class="activity-time text-muted">Il y a 10 minutes</div>
+                </div>
+                <div class="activity-text text-muted">Rendez-vous avec Youssef Mansouri pour une révision complète.</div>
+              </div>
+            </li>
+            <li class="activity-item">
+              <div class="activity-icon bg-success">
+                <i class="fas fa-check text-white"></i>
+              </div>
+              <div class="activity-content">
+                <div class="d-flex justify-content-between">
+                  <div class="activity-title">Rendez-vous terminé</div>
+                  <div class="activity-time text-muted">Il y a 2 heures</div>
+                </div>
+                <div class="activity-text text-muted">Changement des pneus pour Fatima Belkacem terminé.</div>
+              </div>
+            </li>
+            <li class="activity-item">
+              <div class="activity-icon bg-warning">
+                <i class="fas fa-clock text-white"></i>
+              </div>
+              <div class="activity-content">
+                <div class="d-flex justify-content-between">
+                  <div class="activity-title">Statut modifié</div>
+                  <div class="activity-time text-muted">Il y a 5 heures</div>
+                </div>
+                <div class="activity-text text-muted">Le rendez-vous de Karim Lazaar a été confirmé.</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modals -->
+  <!-- Add/Edit Appointment Modal -->
+  <ng-template #addAppointmentModal let-modal>
+    <div class="modal-header border-0">
+      <h5 class="modal-title">{{ editingAppointment?.id ? 'Modifier le rendez-vous' : 'Nouveau rendez-vous' }}</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Nom du client</label>
+            <input type="text" class="form-control" [(ngModel)]="editingAppointment!.clientName" name="clientName">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Téléphone</label>
+            <input type="tel" class="form-control" [(ngModel)]="editingAppointment!.clientPhone" name="clientPhone">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control" [(ngModel)]="editingAppointment!.clientEmail" name="clientEmail">
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Date</label>
+            <input type="date" class="form-control" [(ngModel)]="editingAppointment!.date" name="date">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Heure</label>
+            <input type="time" class="form-control" [(ngModel)]="editingAppointment!.time" name="time">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Service</label>
+            <select class="form-select" [(ngModel)]="editingAppointment!.service" name="service">
+              <option value="Vidange">Vidange</option>
+              <option value="Diagnostic moteur">Diagnostic moteur</option>
+              <option value="Freins et plaquettes">Freins et plaquettes</option>
+              <option value="Changement pneus">Changement pneus</option>
+              <option value="Révision complète">Révision complète</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Statut</label>
+            <select class="form-select" [(ngModel)]="editingAppointment!.status" name="status">
+              <option value="Pending">En attente</option>
+              <option value="Confirmed">Confirmé</option>
+              <option value="Cancelled">Annulé</option>
+              <option value="Completed">Terminé</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Prix (DT)</label>
+            <input type="number" class="form-control" [(ngModel)]="editingAppointment!.price" name="price">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Statut de paiement</label>
+            <select class="form-select" [(ngModel)]="editingAppointment!.paymentStatus" name="paymentStatus">
+              <option value="Unpaid">Non payé</option>
+              <option value="Partial">Partiel</option>
+              <option value="Paid">Payé</option>
+            </select>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Notes</label>
+          <textarea class="form-control" rows="3" [(ngModel)]="editingAppointment!.notes" name="notes"></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer border-0">
+      <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">Annuler</button>
+      <button type="button" class="btn btn-primary" (click)="saveAppointment()">Enregistrer</button>
+    </div>
+  </ng-template>
+</div>
