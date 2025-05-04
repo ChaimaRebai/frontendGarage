@@ -1,1 +1,32 @@
-dashhhhh client 
+<div class="dashboard">
+  <h2>Bienvenue dans votre espace AutoCare</h2>
+
+  <section class="appointment-section">
+    <h3>📅 Prendre un rendez-vous</h3>
+    <form (submit)="bookAppointment()">
+      <label>Date</label>
+      <input type="date" [(ngModel)]="appointment.date" name="date" required />
+      <label>Heure</label>
+      <input type="time" [(ngModel)]="appointment.time" name="time" required />
+      <label>Service</label>
+      <select [(ngModel)]="appointment.service" name="service" required>
+        <option value="Vidange">Vidange</option>
+        <option value="Diagnostic moteur">Diagnostic moteur</option>
+        <option value="Freinage">Freinage</option>
+        <option value="Climatisation">Climatisation</option>
+      </select>
+      <button type="submit">Réserver</button>
+    </form>
+  </section>
+
+
+
+  <section class="history-section">
+    <h3>🔧 Historique des diagnostics</h3>
+    <ul>
+      <li *ngFor="let diag of diagnostics">
+        {{ diag.date }} - {{ diag.description }}
+      </li>
+    </ul>
+  </section>
+</div>

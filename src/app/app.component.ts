@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { DashboardClientComponent } from './dashboards/client/dashboard-client/dashboard-client.component';
+
 
 @Component({
   selector: 'app-root',

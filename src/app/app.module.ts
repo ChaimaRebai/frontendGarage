@@ -13,6 +13,12 @@ import { ServicesComponent } from './pageAcceuil/services/services.component';
 import { FooterComponent } from './pageAcceuil/footer/footer.component';
 import { NavbarComponent } from './dashboards/client/navbar/navbar.component';
 import { FormsModule } from '@angular/forms';
+import { CalendarModule, DateAdapter  } from 'angular-calendar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+
+
+
 
 @NgModule({
   declarations: [
@@ -30,7 +36,10 @@ import { FormsModule } from '@angular/forms';
   imports: [
     BrowserModule,
     AppRoutingModule, 
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule,
+    CalendarModule.forRoot({provide: DateAdapter,
+      useFactory: adapterFactory,}),
   ],
   providers: [],
   bootstrap: [AppComponent]
