@@ -90,6 +90,15 @@
   cursor: pointer;
 }
 
+.btn-edit{
+  background: #3366FF;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
 /* Historique */
 .diagnostic-list {
   list-style: none;
@@ -104,4 +113,9 @@
 .date {
   font-weight: bold;
   margin-right: 10px;
+}
+
+.action-btns{
+  display: flex;
+  gap: 4px;
 }

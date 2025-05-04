@@ -17,6 +17,14 @@ import { CalendarModule, DateAdapter  } from 'angular-calendar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { EditAppointmentDialogComponent } from './dashboards/client/edit-appointment-dialog/edit-appointment-dialog.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+
 
 
 
@@ -35,8 +43,16 @@ import { NotFoundComponent } from './not-found/not-found.component';
     FooterComponent,
     NavbarComponent,
     NotFoundComponent,
+    EditAppointmentDialogComponent,
   ],
   imports: [
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatButtonModule,
+    MatDialogModule,
     BrowserModule,
     AppRoutingModule, 
     FormsModule,
