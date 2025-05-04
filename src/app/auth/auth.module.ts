@@ -9,8 +9,6 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AuthService } from './services/auth.service';
 import { authGuard } from './guards/auth.guard';
-import { roleGuard } from './guards/role.guard';
-import { noAuthGuard } from './guards/no-auth.guard';
 
 
 @NgModule({

@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 export interface User {
   id: string;
   email: string;
-  role: 'client' | 'professional' | 'admin';
+  role: 'client' | 'professional';
 }
 
 interface AuthResponse {

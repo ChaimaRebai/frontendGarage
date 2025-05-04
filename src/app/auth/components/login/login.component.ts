@@ -35,7 +35,7 @@ export class LoginComponent {
 
     this.authService.login(email!, password!).subscribe({
       next: (user) => {
-        const redirectPath = user.role === 'admin' ? '/admin' : '/dashboard-client';
+        const redirectPath = user.role === 'professional' ? '/dashboard-pro' : '/dashboard-client';
         this.router.navigate([redirectPath]);
       },
       error: (err) => {

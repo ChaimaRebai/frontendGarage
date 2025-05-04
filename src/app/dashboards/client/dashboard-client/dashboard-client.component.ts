@@ -3,9 +3,7 @@ import { CalendarEvent } from 'angular-calendar';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { EditAppointmentDialogComponent } from '../edit-appointment-dialog/edit-appointment-dialog.component';
-
-
-
+import { AppointmentService } from '../../../services/appointment.service';
 
 export interface Appointment {
   id: number;
@@ -24,29 +22,44 @@ export interface Diagnostic {
   selector: 'app-dashboard-client',
   standalone: false,
   templateUrl: './dashboard-client.component.html',
-  styleUrl: './dashboard-client.component.css'
+  styleUrl: './dashboard-client.component.css',
 })
-
-
-
 export class DashboardClientComponent {
-   // Données des rendez-vous
-   appointments: Appointment[] = [
-    { id: 1, date: '2025-06-15', time: '10:00', service: 'Vidange', status: 'Confirmed' },
-    { id: 2, date: '2025-06-20', time: '14:30', service: 'Diagnostic moteur', status: 'Pending' }
+  // Données des rendez-vous
+  appointments: Appointment[] = [
+    {
+      id: 1,
+      date: '2025-06-15',
+      time: '10:00',
+      service: 'Vidange',
+      status: 'Confirmed',
+    },
+    {
+      id: 2,
+      date: '2025-06-20',
+      time: '14:30',
+      service: 'Diagnostic moteur',
+      status: 'Pending',
+    },
   ];
 
   // Données des diagnostics
   diagnostics: Diagnostic[] = [
-    { date: '2025-03-01', description: 'Diagnostic moteur effectué - Tout est normal' },
-    { date: '2025-01-20', description: 'Vidange effectuée - Huile synthétique 5W30' }
+    {
+      date: '2025-03-01',
+      description: 'Diagnostic moteur effectué - Tout est normal',
+    },
+    {
+      date: '2025-01-20',
+      description: 'Vidange effectuée - Huile synthétique 5W30',
+    },
   ];
 
   // Nouveau rendez-vous
   newAppointment = {
     date: '',
     time: '',
-    service: ''
+    service: '',
   };
 
   // Services disponibles
@@ -56,8 +69,10 @@ export class DashboardClientComponent {
     'Freinage',
     'Climatisation',
     'Pneumatiques',
-    'Carrosserie'
+    'Carrosserie',
   ];
+
+  constructor(private appointmentService: AppointmentService, private dialog: MatDialog) {}
 
   // Réserver un rendez-vous
   bookAppointment() {
@@ -68,26 +83,31 @@ export class DashboardClientComponent {
       date: this.newAppointment.date,
       time: this.newAppointment.time,
       service: this.newAppointment.service,
-      status: 'Pending'
+      status: 'Pending',
     };
+
+    this.appointmentService.createAppointment(appointment).subscribe(
+      (newAppointment) => {
+        console.log(newAppointment);
+        
+        this.appointments.push(newAppointment);
+        this.resetForm();
+      },
+      (error) => console.error('Error creating appointment:', error)
+    );
 
     this.appointments.push(appointment);
     this.resetForm();
   }
 
-  constructor(private dialog: MatDialog) {}
-
-
   editAppointment(rdv: any) {
-    
     const dialogRef = this.dialog.open(EditAppointmentDialogComponent, {
-      data: { appointment: rdv }
+      data: { appointment: rdv },
     });
-  
-    dialogRef.afterClosed().subscribe(result => {
+
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        
-        const index = this.activeAppointments.findIndex(a => a.id === rdv.id);
+        const index = this.activeAppointments.findIndex((a) => a.id === rdv.id);
         if (index !== -1) {
           this.activeAppointments[index].time = result.time;
           this.activeAppointments[index].date = result.date;
@@ -102,7 +122,7 @@ export class DashboardClientComponent {
 
   saveAppointmentChanges() {
     const index = this.activeAppointments.findIndex(
-      appt => appt.id === this.editedAppointment.id
+      (appt) => appt.id === this.editedAppointment.id
     );
     if (index !== -1) {
       this.activeAppointments[index] = { ...this.editedAppointment };
@@ -113,7 +133,7 @@ export class DashboardClientComponent {
 
   // Annuler un rendez-vous
   cancelAppointment(id: number) {
-    const index = this.appointments.findIndex(a => a.id === id);
+    const index = this.appointments.findIndex((a) => a.id === id);
     if (index !== -1) {
       this.appointments[index].status = 'Cancelled';
     }
@@ -121,9 +141,11 @@ export class DashboardClientComponent {
 
   // Vérification du formulaire
   isFormValid(): boolean {
-    return !!this.newAppointment.date && 
-           !!this.newAppointment.time && 
-           !!this.newAppointment.service;
+    return (
+      !!this.newAppointment.date &&
+      !!this.newAppointment.time &&
+      !!this.newAppointment.service
+    );
   }
 
   // Réinitialisation du formulaire
@@ -131,25 +153,25 @@ export class DashboardClientComponent {
     this.newAppointment = {
       date: '',
       time: '',
-      service: ''
+      service: '',
     };
   }
 
   // Génération d'ID
   private generateId(): number {
-    return Math.max(0, ...this.appointments.map(a => a.id)) + 1;
+    return Math.max(0, ...this.appointments.map((a) => a.id)) + 1;
   }
 
   // Filtre des rendez-vous actifs
   get activeAppointments() {
-    return this.appointments.filter(a => a.status !== 'Cancelled');
+    return this.appointments.filter((a) => a.status !== 'Cancelled');
   }
   getStatusText(status: string): string {
     const statusTexts: { [key: string]: string } = {
-      'Pending': 'En attente',
-      'Confirmed': 'Confirmé',
-      'Cancelled': 'Annulé',
-      'Completed': 'Terminé'
+      Pending: 'En attente',
+      Confirmed: 'Confirmé',
+      Cancelled: 'Annulé',
+      Completed: 'Terminé',
     };
     return statusTexts[status] || status;
   }
@@ -161,5 +183,4 @@ export class DashboardClientComponent {
     const day = today.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
-
 }

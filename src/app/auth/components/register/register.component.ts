@@ -24,8 +24,9 @@ export class RegisterComponent {
 
   constructor() {
     this.registerForm = this.fb.group({
+      name: ['hech'],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', Validators.required],
       role: ['client', Validators.required]
     }, { validators: this.passwordMatchValidator });
@@ -43,11 +44,12 @@ export class RegisterComponent {
     this.isLoading = true;
     this.errorMessage = null;
 
-    const { email, password, role } = this.registerForm.value;
+    const { name, email, password, role } = this.registerForm.value;
 
-    this.authService.register({ email, password, role }).subscribe({
-      next: () => {
-        this.router.navigate(['/dashboard']);
+    this.authService.register({ name, email, password, role }).subscribe({
+      next: (user) => {
+        const redirectPath = user.role === 'professional' ? '/dashboard-pro' : '/dashboard-client';
+        this.router.navigate([redirectPath]);
       },
       error: (err) => {
         this.errorMessage = err.error?.message || "Erreur lors de l'inscription";
