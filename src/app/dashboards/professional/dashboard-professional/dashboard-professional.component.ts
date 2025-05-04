@@ -1,7 +1,4 @@
-// dashboard-professional.component.ts
-import { CommonModule } from '@angular/common';
 import { Component, ViewEncapsulation, OnInit, inject } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Chart, registerables } from 'chart.js';
 
@@ -228,23 +225,21 @@ export class DashboardProfessionalComponent implements OnInit {
     this.statistics[3].value = totalRevenue;
   }
 
-  // Ouvrir la modal pour ajouter/modifier un rendez-vous
   openAppointmentModal(content: any, appointment?: Appointment) {
     if (appointment) {
-      this.editingAppointment = { ...appointment };
+      // Create a deep copy of the appointment to edit
+      this.editingAppointment = JSON.parse(JSON.stringify(appointment));
     } else {
       this.editingAppointment = this.getEmptyAppointment();
     }
     this.modalService.open(content, { centered: true, size: 'lg' });
   }
-
-  // Créer un nouvel objet rendez-vous vide
   getEmptyAppointment(): Appointment {
     return {
-      id: this.appointments.length + 1,
-      date: '',
-      time: '',
-      service: '',
+      id: 0, // Temporary ID, will be set when saving
+      date: new Date().toISOString().split('T')[0], // Today's date as default
+      time: '09:00', // Default time
+      service: 'Vidange', // Default service
       status: 'Pending',
       clientName: '',
       clientEmail: '',
@@ -254,24 +249,25 @@ export class DashboardProfessionalComponent implements OnInit {
       price: 0
     };
   }
-
-  // Sauvegarder un rendez-vous (nouveau ou édité)
   saveAppointment() {
     if (this.editingAppointment) {
-      const index = this.appointments.findIndex(a => a.id === this.editingAppointment?.id);
-      if (index > -1) {
-        // Mise à jour d'un rendez-vous existant
-        this.appointments[index] = { ...this.editingAppointment };
+      if (this.editingAppointment.id) {
+        // Find and update existing appointment
+        const index = this.appointments.findIndex(a => a.id === this.editingAppointment?.id);
+        if (index > -1) {
+          this.appointments[index] = { ...this.editingAppointment };
+        }
       } else {
-        // Ajout d'un nouveau rendez-vous
+        // Add new appointment with a unique ID
+        const newId = Math.max(...this.appointments.map(a => a.id)) + 1;
+        this.editingAppointment.id = newId;
         this.appointments.push({ ...this.editingAppointment });
       }
-      this.editingAppointment = null;
+      
       this.calculateStatistics();
-      this.totalItems = this.filteredAppointments.length;
       this.modalService.dismissAll();
       
-      // Mettre à jour les graphiques
+      // Update charts
       if (this.appointmentChart) {
         this.appointmentChart.data.datasets[0].data = [
           this.appointments.filter(a => a.status === 'Pending').length,
@@ -283,7 +279,6 @@ export class DashboardProfessionalComponent implements OnInit {
       }
     }
   }
-
   // Supprimer un rendez-vous
   deleteAppointment(id: number) {
     if (confirm('Êtes-vous sûr de vouloir supprimer ce rendez-vous?')) {
@@ -543,7 +538,67 @@ getUserInitials(): string {
   const name = "Mohammed Gharbi";
   return name.split(' ').map(n => n[0]).join('').toUpperCase();
 }
+currentMonth = 'Juin';
+currentYear = '2025';
+hours = [8,9,10,11,12,13,14,15,16,17,18];
+dailyEvents = [
+  {
+    id: 1,
+    title: 'Vidange - Ahmed Benali',
+    startTime: '10:00',
+    endTime: '11:30',
+    service: 'Vidange',
+    clientName: 'Ahmed Benali',
+    status: 'Confirmed'
+  },
+  {
+    id: 2,
+    title: 'Diagnostic moteur - Ons Cherif',
+    startTime: '14:30',
+    endTime: '15:30',
+    service: 'Diagnostic moteur',
+    clientName: 'Ons Cherif',
+    status: 'Confirmed'
+  }
+];
 
+setView(view: 'day' | 'week' | 'month') {
+  this.currentView = view;
+}
+previousPeriod() {
+  // Implement logic to go to previous day/week/month
+}
+
+nextPeriod() {
+  // Implement logic to go to next day/week/month
+}
+
+calculateEventTopPosition(event: any): number {
+  // Calculate position based on event time
+  const [hours, minutes] = event.startTime.split(':').map(Number);
+  return (hours - 8) * 60 + minutes;
+}
+
+calculateEventHeight(event: any): number {
+  // Calculate height based on duration
+  const [startHours, startMinutes] = event.startTime.split(':').map(Number);
+  const [endHours, endMinutes] = event.endTime.split(':').map(Number);
+  return (endHours - startHours) * 60 + (endMinutes - startMinutes);
+}
+
+
+// Notification methods
+handleNotificationClick(event: Event, notification: any) {
+  event.preventDefault();
+  // Handle notification click
+  console.log('Notification clicked:', notification);
+  // You might want to mark as read, navigate, or open related appointment
+}
+
+viewAllNotifications(event: Event) {
+  event.preventDefault();
+  // Navigate to notifications page or show all in expanded view
+}
 // Update appointment status
 
 }

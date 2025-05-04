@@ -169,3 +169,109 @@
   font-weight: bold;
   text-transform: uppercase;
 }
+/* Calendar View Styles */
+.calendar-view {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.calendar-day-view {
+  display: flex;
+  height: 600px;
+  position: relative;
+}
+
+.time-column {
+  width: 60px;
+  padding-right: 10px;
+  text-align: right;
+  border-right: 1px solid #eee;
+}
+
+.time-slot {
+  height: 60px;
+  line-height: 60px;
+  color: #6c757d;
+  font-size: 0.85rem;
+}
+
+.events-column {
+  flex: 1;
+  position: relative;
+  padding-left: 10px;
+}
+
+.event-card {
+  position: absolute;
+  width: calc(100% - 80px);
+  background-color: #e3f2fd;
+  border-left: 3px solid #2196f3;
+  border-radius: 4px;
+  padding: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.event-card:hover {
+  background-color: #bbdefb;
+}
+
+.event-time {
+  font-size: 0.75rem;
+  color: #1976d2;
+  margin-bottom: 4px;
+}
+
+.event-title {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+/* Notification Dropdown Styles */
+.notification-dropdown {
+  width: 320px;
+  padding: 0;
+}
+
+.notification-item {
+  display: flex;
+  padding: 12px 16px;
+}
+
+.notification-item:hover {
+  background-color: #f8f9fa;
+}
+
+.notification-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.notification-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-title {
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.notification-text {
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.notification-time {
+  font-size: 0.75rem;
+  margin-top: 2px;
+}
