@@ -1,37 +1,51 @@
 <header id="header" class="header d-flex align-items-center fixed-top">
-    <div class="container-fluid container-xl position-relative d-flex align-items-center">
-  
-      <a href="index.html" class="logo d-flex align-items-center me-auto">
-       
-        <span class="sitename">A<span style="text-transform: lowercase;">uto</span><span>C<span style="text-transform: lowercase;">are</span></span></span>
+  <div
+    class="container-fluid container-xl position-relative d-flex align-items-center"
+  >
+    <a href="index.html" class="logo d-flex align-items-center me-auto">
+      <span class="sitename"
+        >A<span style="text-transform: lowercase">uto</span
+        ><span>C<span style="text-transform: lowercase">are</span></span></span
+      >
+    </a>
 
-      </a>
-  
-      <nav id="navmenu" class="navmenu">
-        <ul >
-          <li><a href="#hero" class="active" >Welcome to our platform</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#services">Our Services</a></li>
-          <li>
-            <div class="d-flex">
-              <a [routerLink]="['/auth/login']" class="btn-get-started" aria-label="Login">
-                <i class="fa-solid fa-arrow-right"></i>
-                <span>LogIn</span>
-              </a>
-            </div>
-          </li>
-          
-          
-        </ul>
-        <button class="mobile-nav-toggle d-xl-none bi bi-list" aria-label="Toggle navigation"></button>
+    <nav id="navmenu" class="navmenu">
+      <ul>
+        <li><a href="#hero" class="active">Welcome to our platform</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Our Services</a></li>
+        <li>
+          <div *ngIf="loggedIn;" (click)="onLogout()" class="d-flex">
+            <a
+              [routerLink]="['/auth/login']"
+              class="btn-get-started"
+              aria-label="Login"
+            >
+              <i class="fa-solid fa-arrow-right"></i>
+              <span>LogOut</span>
+            </a>
+          </div>
+          <div *ngIf="!loggedIn;" class="d-flex">
+            <a
+              [routerLink]="['/auth/login']"
+              class="btn-get-started"
+              aria-label="Login"
+            >
+              <i class="fa-solid fa-arrow-right"></i>
+              <span>LogIn</span>
+            </a>
+          </div>
+        </li>
+      </ul>
+      <button
+        class="mobile-nav-toggle d-xl-none bi bi-list"
+        aria-label="Toggle navigation"
+      ></button>
+    </nav>
+  </div>
+</header>
 
-      </nav>
-  
-  
-    </div>
-  </header>
-
-  <app-main></app-main>
-  <app-about></app-about>
-  <app-services></app-services>
-  <app-footer></app-footer>
+<app-main></app-main>
+<app-about></app-about>
+<app-services></app-services>
+<app-footer></app-footer>
