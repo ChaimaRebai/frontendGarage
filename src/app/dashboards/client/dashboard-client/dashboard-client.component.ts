@@ -79,15 +79,20 @@ export class DashboardClientComponent {
 
 
   editAppointment(rdv: any) {
+    
     const dialogRef = this.dialog.open(EditAppointmentDialogComponent, {
       data: { appointment: rdv }
     });
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        
         const index = this.activeAppointments.findIndex(a => a.id === rdv.id);
         if (index !== -1) {
-          this.activeAppointments[index] = result;
+          this.activeAppointments[index].time = result.time;
+          this.activeAppointments[index].date = result.date;
+          this.activeAppointments[index].service = result.service;
+          this.activeAppointments[index].status = result.status;
         }
       }
     });
